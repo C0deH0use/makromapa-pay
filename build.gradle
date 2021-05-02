@@ -1,0 +1,258 @@
+buildscript {
+    ext {
+        set('springBootVersion', "2.4.5")
+        set('springCloudVersion', "2020.0.2")
+        set("springSecurityOAuth2Version", "2.5.1.RELEASE")
+
+        set("restAssured", "4.3.3")
+        set("junit5Version", "5.7.1")
+        set("junitPlatformVersion", "1.7.1")
+        set("spockVersion", "2.0-M5-groovy-3.0")
+
+        set("junitPlatformVersion", "1.7.1")
+        set('junit-jupiter.version', '5.7.1')
+
+        set('swaggerVersion', "2.9.2")
+    }
+
+    ext["mockito.version"] = "3.9.0"
+
+    ext['junit-jupiter.version'] = "5.7.1"
+
+    repositories {
+        mavenCentral()
+    }
+
+    dependencies {
+        classpath "org.springframework.boot:spring-boot-gradle-plugin:${springBootVersion}"
+        classpath "org.springframework.cloud:spring-cloud-dependencies:${springCloudVersion}"
+    }
+}
+
+plugins {
+    id 'java-library'
+    id "groovy"
+    id "idea"
+    id 'pmd'
+    id 'checkstyle'
+
+    id "io.freefair.lombok" version "5.3.3.3"
+
+    id 'org.springframework.boot' version '2.4.5'
+    id 'io.spring.dependency-management' version '1.0.11.RELEASE'
+}
+
+compileJava {
+    sourceCompatibility = JavaVersion.VERSION_16
+    targetCompatibility = JavaVersion.VERSION_16
+}
+
+configurations {
+    compileOnly {
+        extendsFrom annotationProcessor
+    }
+
+    developmentOnly
+    runtimeClasspath.extendsFrom(developmentOnly)
+
+    integrationTestRuntime.extendsFrom(testRuntime)
+    integrationTestRuntimeOnly.extendsFrom(testRuntimeOnly)
+
+    integrationTestCompile.extendsFrom(testImplementation)
+    integrationTestCompileOnly.extendsFrom(testCompileOnly)
+}
+
+repositories {
+    mavenCentral()
+}
+
+idea {
+    module {
+        testSourceDirs += file("src/integrationTest/java")
+        testSourceDirs += file("src/integrationTest/resources")
+    }
+}
+
+sourceSets {
+    integrationTest {
+        java {
+            compileClasspath += main.output + test.output
+            runtimeClasspath += main.output + test.output
+            srcDir file('src/integrationTest/java')
+        }
+    }
+}
+
+dependencyManagement {
+    imports {
+        mavenBom "org.springframework.cloud:spring-cloud-dependencies:${springCloudVersion}"
+    }
+}
+
+springBoot {
+    mainClassName = 'pl.code.house.makro.mapa.pay.MakromapaPayApplication'
+    buildInfo {
+        properties {
+            additional = [
+                    'commit_sha': System.getenv('CI_COMMIT_SHA') ?: 'LOCAL'
+            ]
+        }
+    }
+}
+
+bootRun {
+    doFirst() {
+        if (project.hasProperty('profiles')) {
+            systemProperty 'spring.profiles.active', profiles
+        } else {
+            println "***@@@@@ Property profiles (-Pprofiles=)was not passed, setting default = local @@@@@***"
+            systemProperty 'spring.profiles.active', 'local'
+        }
+    }
+    main = 'pl.code.house.makro.mapa.pay.MakromapaPayApplication'
+}
+
+bootJar {
+    archiveFileName.set("${archiveBaseName.get()}.${archiveExtension.get()}")
+    mainClassName = "pl.code.house.makro.mapa.pay.MakromapaPayApplication"
+
+    println "Project: $rootProject.name:$project.version"
+    println "Generate jar: ${archiveFileName.get()}"
+}
+
+dependencies {
+    implementation(
+            'org.springframework.boot:spring-boot-starter-actuator',
+            'org.springframework.boot:spring-boot-starter-logging',
+
+            'org.springframework.boot:spring-boot-starter-web',
+            'org.springframework.boot:spring-boot-starter-validation',
+
+            'org.springframework.security:spring-security-oauth2-jose',
+            'org.springframework.security:spring-security-oauth2-resource-server',
+
+            'org.springframework.boot:spring-boot-starter-security',
+            'org.springframework.security.oauth.boot:spring-security-oauth2-autoconfigure',
+            'com.nimbusds:oauth2-oidc-sdk',
+
+            "org.apache.commons:commons-lang3:3.12.0",
+            'io.vavr:vavr:0.10.3',
+    )
+
+    developmentOnly 'org.springframework.boot:spring-boot-devtools'
+    annotationProcessor(
+            'org.springframework.boot:spring-boot-configuration-processor',
+    )
+
+    testRuntimeOnly(
+            "org.junit.platform:junit-platform-engine:${junitPlatformVersion}",
+    )
+
+    testImplementation('org.springframework.boot:spring-boot-starter-test') {
+        exclude group: 'org.junit.vintage', module: 'junit-vintage-engine'
+    }
+
+    testImplementation("org.spockframework:spock-core:${spockVersion}") {
+        exclude group: 'org.codehaus.groovy'
+    }
+
+    testImplementation(
+            'io.projectreactor:reactor-test',
+            "org.springframework.security:spring-security-test",
+
+            "org.junit.jupiter:junit-jupiter-api:${junit5Version}",
+            "org.junit.jupiter:junit-jupiter-params:${junit5Version}",
+            "org.junit.platform:junit-platform-launcher:${junitPlatformVersion}",
+
+            "io.rest-assured:spring-mock-mvc:${restAssured}",
+            "io.rest-assured:rest-assured:${restAssured}",
+            "io.rest-assured:rest-assured-all:${restAssured}",
+            "io.rest-assured:rest-assured-common:${restAssured}",
+
+            "org.exparity:hamcrest-date:2.0.7",
+    )
+
+    integrationTestRuntimeOnly(
+            "org.junit.platform:junit-platform-engine:${junitPlatformVersion}",
+    )
+
+}
+
+/*
+ * Tasks
+ */
+pmd {
+    ignoreFailures = false
+    pmdTest.enabled = false
+    pmdIntegrationTest.enabled = false
+    ruleSets = []
+    ruleSetConfig(project.resources.text.fromUri("https://raw.githubusercontent.com/Marek00Malik/codestyle/master/config/pmd/pmdRules.xml"))
+}
+
+checkstyle {
+    ignoreFailures = false
+    maxErrors = 0
+    maxWarnings = 0
+    checkstyleTest.enabled = false
+    checkstyleIntegrationTest.enabled = false
+    config = project.resources.text.fromUri("https://raw.githubusercontent.com/Marek00Malik/codestyle/master/config/checkstyle/checkstyle.xml")
+}
+
+tasks.withType(Checkstyle) {
+    reports {
+        xml.enabled = true
+        html.enabled = true
+    }
+}
+
+tasks.withType(Pmd) {
+    reports {
+        xml.enabled = true
+        html.enabled = true
+    }
+}
+
+test {
+    maxParallelForks = 4
+
+    group = LifecycleBasePlugin.VERIFICATION_GROUP
+    outputs.upToDateWhen { false }
+
+    useJUnitPlatform {
+        excludeEngines 'junit-vintage'
+    }
+
+    testLogging {
+        events "passed", "skipped", "failed"
+    }
+}
+
+task integrationTest(type: Test) {
+    description = 'Run integration tests.'
+
+    outputs.upToDateWhen { false }
+    group = LifecycleBasePlugin.VERIFICATION_GROUP
+
+    testClassesDirs = sourceSets.integrationTest.output.classesDirs
+    classpath = sourceSets.integrationTest.runtimeClasspath
+
+    useJUnitPlatform {
+        excludeEngines 'junit-vintage'
+    }
+
+    testLogging {
+        events "passed", "skipped", "failed"
+        showStandardStreams = true
+    }
+
+    doFirst() {
+        if (project.hasProperty('profiles')) {
+            println "***@@@@@ Property profiles with value: $profiles"
+            systemProperty 'spring.profiles.active', profiles
+        } else {
+            println "***@@@@@ Property profiles (-Pprofiles=) was not passed, setting default = default, integrationTests @@@@@***"
+            systemProperty 'spring.profiles.active', 'integrationTest'
+        }
+    }
+}
+

@@ -1,0 +1,12 @@
+info:
+  app:
+    host: http://localhost:9090
+
+makromapa-auth:
+  root:
+    url: http://localhost:9091
+
+security:
+  oauth2:
+    client:
+      client-secret: secret

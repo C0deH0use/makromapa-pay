@@ -1,0 +1,47 @@
+info:
+  app:
+    name: MakroMapa Payment serice
+    description: MakroMapa Payment API
+    host: https://pay.makromapa.pl
+
+server:
+  port: 9090
+
+spring:
+  profiles:
+    active: integrationTest
+
+makromapa-auth:
+  root:
+    url: https://auth.makromapa.pl
+
+security:
+  oauth2:
+    resource:
+      prefer-token-info: true
+      user-info-uri: ${makromapa-auth.root.url}/oauth/user-info
+      token-info-uri: ${makromapa-auth.root.url}/oauth/check_token
+
+    client:
+      client-id: makromapa-backend
+      client-secret: some-secret-password
+
+
+## Actuator configuration
+management:
+  health:
+    defaults:
+      enabled: true
+  endpoints:
+    web:
+      exposure:
+        include: info, health, loggers
+
+logging:
+  level:
+    pl:
+      code:
+        house:
+          makro:
+            mapa:
+              pay: INFO

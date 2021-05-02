@@ -1,0 +1,47 @@
+package pl.code.house.makro.mapa.pay.infrastructure;
+
+import static com.fasterxml.jackson.databind.SerializationFeature.WRITE_DATES_AS_TIMESTAMPS;
+
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.databind.SerializationFeature;
+import com.fasterxml.jackson.databind.module.SimpleModule;
+import com.fasterxml.jackson.databind.util.StdDateFormat;
+import java.time.Clock;
+import java.time.ZoneId;
+import lombok.extern.slf4j.Slf4j;
+import org.springframework.context.annotation.Bean;
+import org.springframework.context.annotation.Configuration;
+import org.springframework.context.annotation.Primary;
+import org.springframework.http.converter.json.MappingJackson2HttpMessageConverter;
+
+@Slf4j
+@Configuration
+class InfrastructureConfiguration {
+
+  @Bean
+  @Primary
+  MappingJackson2HttpMessageConverter mappingJackson2HttpMessageConverter(ObjectMapper defaultObjectMapper) {
+    MappingJackson2HttpMessageConverter jsonConverter = new MappingJackson2HttpMessageConverter();
+    jsonConverter.setObjectMapper(defaultObjectMapper);
+    return jsonConverter;
+  }
+
+  @Bean
+  @Primary
+  ObjectMapper defaultObjectMapper() {
+    final ObjectMapper objectMapper = new ObjectMapper();
+
+    final SimpleModule customsModule = new SimpleModule();
+    objectMapper.registerModule(customsModule);
+
+    objectMapper.disable(WRITE_DATES_AS_TIMESTAMPS);
+    objectMapper.setDateFormat(new StdDateFormat());
+
+    return objectMapper;
+  }
+
+  @Bean
+  Clock systemClock() {
+    return Clock.system(ZoneId.of("Europe/Warsaw"));
+  }
+}
