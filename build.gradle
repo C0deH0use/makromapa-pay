@@ -2,6 +2,7 @@ buildscript {
     ext {
         set('springBootVersion', "2.4.5")
         set('springCloudVersion', "2020.0.2")
+        set('springClouContractVersion', "3.0.2")
         set("springSecurityOAuth2Version", "2.5.1.RELEASE")
 
         set("restAssured", "4.3.3")
@@ -16,7 +17,7 @@ buildscript {
     }
 
     ext["mockito.version"] = "3.9.0"
-
+    ext['groovy.version'] = '3.0.7'
     ext['junit-jupiter.version'] = "5.7.1"
 
     repositories {
@@ -43,8 +44,8 @@ plugins {
 }
 
 compileJava {
-    sourceCompatibility = JavaVersion.VERSION_16
-    targetCompatibility = JavaVersion.VERSION_16
+    sourceCompatibility = JavaVersion.VERSION_15
+    targetCompatibility = JavaVersion.VERSION_15
 }
 
 configurations {
@@ -126,20 +127,22 @@ dependencies {
             'org.springframework.boot:spring-boot-starter-logging',
 
             'org.springframework.boot:spring-boot-starter-web',
+            "org.springframework.boot:spring-boot-starter-webflux",
             'org.springframework.boot:spring-boot-starter-validation',
 
+            'org.springframework.boot:spring-boot-starter-security',
             'org.springframework.security:spring-security-oauth2-jose',
             'org.springframework.security:spring-security-oauth2-resource-server',
-
-            'org.springframework.boot:spring-boot-starter-security',
             'org.springframework.security.oauth.boot:spring-security-oauth2-autoconfigure',
             'com.nimbusds:oauth2-oidc-sdk',
 
             "org.apache.commons:commons-lang3:3.12.0",
             'io.vavr:vavr:0.10.3',
+            'com.stripe:stripe-java:20.47.1',
     )
 
     developmentOnly 'org.springframework.boot:spring-boot-devtools'
+
     annotationProcessor(
             'org.springframework.boot:spring-boot-configuration-processor',
     )
@@ -152,24 +155,52 @@ dependencies {
         exclude group: 'org.junit.vintage', module: 'junit-vintage-engine'
     }
 
-    testImplementation("org.spockframework:spock-core:${spockVersion}") {
-        exclude group: 'org.codehaus.groovy'
-    }
-
     testImplementation(
             'io.projectreactor:reactor-test',
-            "org.springframework.security:spring-security-test",
+            'org.springframework.security:spring-security-test',
 
             "org.junit.jupiter:junit-jupiter-api:${junit5Version}",
             "org.junit.jupiter:junit-jupiter-params:${junit5Version}",
             "org.junit.platform:junit-platform-launcher:${junitPlatformVersion}",
 
-            "io.rest-assured:spring-mock-mvc:${restAssured}",
-            "io.rest-assured:rest-assured:${restAssured}",
-            "io.rest-assured:rest-assured-all:${restAssured}",
-            "io.rest-assured:rest-assured-common:${restAssured}",
-
             "org.exparity:hamcrest-date:2.0.7",
+    )
+
+    integrationTestImplementation(
+//            //FIXME: JAVA 16 & GRADLE 7.0
+//            'org.springframework.boot:spring-boot-starter-actuator',
+//            'org.springframework.boot:spring-boot-starter-logging',
+//
+//            'org.springframework.boot:spring-boot-starter-web',
+//            'org.springframework.boot:spring-boot-starter-validation',
+//
+//            'org.springframework.boot:spring-boot-starter-security',
+//            'org.springframework.security:spring-security-oauth2-jose',
+//            'org.springframework.security:spring-security-oauth2-resource-server',
+//            'org.springframework.security.oauth.boot:spring-security-oauth2-autoconfigure',
+//            'com.nimbusds:oauth2-oidc-sdk',
+//
+//            "org.apache.commons:commons-lang3:3.12.0",
+//            'io.vavr:vavr:0.10.3',
+//            'io.projectreactor:reactor-test',
+//            'org.springframework.security:spring-security-test',
+//
+//            "org.junit.jupiter:junit-jupiter-api:${junit5Version}",
+//            "org.junit.jupiter:junit-jupiter-params:${junit5Version}",
+//            "org.junit.platform:junit-platform-launcher:${junitPlatformVersion}",
+//
+//            "org.exparity:hamcrest-date:2.0.7",
+//            -----------------------
+
+            "org.springframework.cloud:spring-cloud-starter-contract-stub-runner:${springClouContractVersion}",
+
+            "org.spockframework:spock-core:${spockVersion}",
+
+            "io.rest-assured:rest-assured:${restAssured}",
+            "io.rest-assured:rest-assured-common:${restAssured}",
+            "io.rest-assured:spring-mock-mvc:${restAssured}",
+            "io.rest-assured:xml-path:${restAssured}",
+            "io.rest-assured:json-path:${restAssured}",
     )
 
     integrationTestRuntimeOnly(

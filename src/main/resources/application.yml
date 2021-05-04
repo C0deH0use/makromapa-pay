@@ -11,6 +11,10 @@ spring:
   profiles:
     active: integrationTest
 
+payments:
+  stripe:
+    api-key: testKey
+
 makromapa-auth:
   root:
     url: https://auth.makromapa.pl

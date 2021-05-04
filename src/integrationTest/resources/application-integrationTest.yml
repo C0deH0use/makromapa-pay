@@ -1,0 +1,24 @@
+logging:
+  level:
+    org:
+      springframework:
+        security:
+          access: DEBUG
+          oauth2: DEBUG
+        web:
+          filter: DEBUG
+    pl:
+      code:
+        house:
+          makro:
+            mapa:
+              pay:
+                stripe: DEBUG
+makromapa-auth:
+  root:
+    url: http://localhost:${wiremock.server.port:9091}
+
+security:
+  oauth2:
+    client:
+      client-secret: secret
