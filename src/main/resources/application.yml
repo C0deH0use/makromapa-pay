@@ -11,9 +11,34 @@ spring:
   profiles:
     active: integrationTest
 
+  jpa:
+    database: POSTGRESQL
+    generate-ddl: false
+    hibernate:
+      ddl-auto: validate
+    properties:
+      hibernate:
+        temp:
+          use_jdbc_metadata_defaults: true
+        jdbc:
+          lob:
+            non_contextual_creation: true
+
+  datasource:
+    platform: postgresql
+    url: jdbc:postgresql://localhost:5433/makromapa-db-pay
+    username: makromapa-pay-user
+    password: mysecretpassword
+    initialization-mode: always
+    driver-class-name: org.postgresql.Driver
+
+  flyway:
+    locations: classpath:db/migration/default
+
+
 payments:
   stripe:
-    api-key: testKey
+    api-key: sk_test_51IiDLPFkiRYX5yMrvtZngijlM5keYuP0w3FEN1nhgvHIp7r0p7A3Zw0xJJRrVdwKHPiMGuOAHzEt3rEkWvwYSf9Y00tIGSLA1N
 
 makromapa-auth:
   root:

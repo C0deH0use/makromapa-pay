@@ -13,6 +13,7 @@ buildscript {
         set("junitPlatformVersion", "1.7.1")
         set('junit-jupiter.version', '5.7.1')
 
+        set("flywayVersion", "7.8.2")
         set('swaggerVersion', "2.9.2")
     }
 
@@ -37,6 +38,7 @@ plugins {
     id 'pmd'
     id 'checkstyle'
 
+    id "org.flywaydb.flyway" version "7.8.2"
     id "io.freefair.lombok" version "5.3.3.3"
 
     id 'org.springframework.boot' version '2.4.5'
@@ -56,11 +58,11 @@ configurations {
     developmentOnly
     runtimeClasspath.extendsFrom(developmentOnly)
 
-    integrationTestRuntime.extendsFrom(testRuntime)
+    integrationTestRuntimeOnly.extendsFrom(testRuntimeOnly)
     integrationTestRuntimeOnly.extendsFrom(testRuntimeOnly)
 
-    integrationTestCompile.extendsFrom(testImplementation)
-    integrationTestCompileOnly.extendsFrom(testCompileOnly)
+    integrationTestImplementation.extendsFrom(testImplementation)
+    integrationTestImplementation.extendsFrom(testImplementation)
 }
 
 repositories {
@@ -128,6 +130,7 @@ dependencies {
 
             'org.springframework.boot:spring-boot-starter-web',
             "org.springframework.boot:spring-boot-starter-webflux",
+            'org.springframework.boot:spring-boot-starter-data-jpa',
             'org.springframework.boot:spring-boot-starter-validation',
 
             'org.springframework.boot:spring-boot-starter-security',
@@ -136,8 +139,12 @@ dependencies {
             'org.springframework.security.oauth.boot:spring-security-oauth2-autoconfigure',
             'com.nimbusds:oauth2-oidc-sdk',
 
+            'org.flywaydb:flyway-core',
+            'org.postgresql:postgresql',
+
             "org.apache.commons:commons-lang3:3.12.0",
             'io.vavr:vavr:0.10.3',
+
             'com.stripe:stripe-java:20.47.1',
     )
 

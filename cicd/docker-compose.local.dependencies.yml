@@ -1,0 +1,25 @@
+version: '3.8'
+services:
+  makromapa_pay_db:
+    image: postgres:13
+    restart: always
+
+    expose:
+      - 5433
+
+    ports:
+      - 5433:5432
+
+    environment:
+      - POSTGRES_DB=makromapa-db-pay
+      - POSTGRES_USER=makromapa-pay-user
+      - POSTGRES_PASSWORD=mysecretpassword
+
+    networks:
+      main:
+        aliases:
+          - postgres_db
+
+networks:
+  main:
+    driver: bridge

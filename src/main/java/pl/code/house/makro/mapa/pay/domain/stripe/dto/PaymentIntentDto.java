@@ -1,18 +1,6 @@
-package pl.code.house.makro.mapa.pay.stripe.dto;
+package pl.code.house.makro.mapa.pay.domain.stripe.dto;
 
-import com.stripe.model.Account;
-import com.stripe.model.Application;
-import com.stripe.model.ChargeCollection;
-import com.stripe.model.Customer;
-import com.stripe.model.ExpandableField;
-import com.stripe.model.Invoice;
 import com.stripe.model.PaymentIntent;
-import com.stripe.model.PaymentMethod;
-import com.stripe.model.PaymentSource;
-import com.stripe.model.Review;
-import com.stripe.model.ShippingDetails;
-import com.stripe.model.StripeError;
-import java.util.List;
 import java.util.Map;
 import lombok.Builder;
 import lombok.Value;
