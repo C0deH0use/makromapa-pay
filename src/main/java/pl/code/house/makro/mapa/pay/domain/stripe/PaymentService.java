@@ -5,9 +5,9 @@ import com.stripe.param.PaymentIntentCreateParams;
 import io.vavr.control.Try;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
-import pl.code.house.makro.mapa.pay.error.CreatePaymentIntentException;
 import pl.code.house.makro.mapa.pay.domain.stripe.dto.PaymentIntentDto;
 import pl.code.house.makro.mapa.pay.domain.stripe.dto.StripePaymentRequest;
+import pl.code.house.makro.mapa.pay.error.CreatePaymentIntentException;
 
 @Service
 public class PaymentService extends StripeBaseApi {
@@ -19,6 +19,7 @@ public class PaymentService extends StripeBaseApi {
   PaymentIntentDto createNewPaymentIntent(StripePaymentRequest request) {
     PaymentIntentCreateParams createParams = new PaymentIntentCreateParams.Builder()
         .setCurrency("PLN")
+        .setPaymentMethod(request.getPaymentMethod())
         .setAmount(request.getAmount())
         .build();
 

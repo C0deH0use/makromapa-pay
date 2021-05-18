@@ -18,7 +18,7 @@ import pl.code.house.makro.mapa.pay.domain.stripe.dto.StripeProductDto;
 public class ProductFacade {
 
   private final ProductRepository productRepository;
-  private final StripProductFacade productFacade;
+  private final StripProductFacade stripProductFacade;
 
   public List<ProductDetailsDto> findAll() {
     return productRepository.findAll()
@@ -35,8 +35,8 @@ public class ProductFacade {
   }
 
   private List<ProductDetailsDto> getProductDetails(Product product) {
-    List<StripeProductDto> stripeProducts = productFacade.getProductPricesFor(product.getName());
-    if(stripeProducts.isEmpty()) {
+    List<StripeProductDto> stripeProducts = stripProductFacade.getProductPricesFor(product.getName());
+    if (stripeProducts.isEmpty()) {
       return singletonList(ProductDetailsDto.builder()
           .productDto(product.toDto())
           .build());

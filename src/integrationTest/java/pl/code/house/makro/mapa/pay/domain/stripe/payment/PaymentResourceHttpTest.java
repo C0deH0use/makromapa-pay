@@ -3,6 +3,10 @@ package pl.code.house.makro.mapa.pay.domain.stripe.payment;
 import static io.restassured.http.ContentType.JSON;
 import static io.restassured.module.mockmvc.RestAssuredMockMvc.webAppContextSetup;
 import static org.hamcrest.Matchers.blankOrNullString;
+import static org.hamcrest.Matchers.equalTo;
+import static org.hamcrest.Matchers.is;
+import static org.hamcrest.Matchers.not;
+import static org.hamcrest.Matchers.nullValue;
 import static org.springframework.http.HttpStatus.CREATED;
 import static org.springframework.security.test.web.servlet.setup.SecurityMockMvcConfigurers.springSecurity;
 import static pl.code.house.makro.mapa.pay.AuthenticationToken.getAuthenticationHeader;
@@ -51,11 +55,21 @@ class PaymentResourceHttpTest {
         .log().ifValidationFails()
         .status(CREATED)
 
-        .body(blankOrNullString())
+        .body("amount", equalTo(800))
+        .body("capturedAmount", equalTo(0))
+        .body("receivedAmount", equalTo(0))
+        .body("currency", equalTo("pln"))
+        .body("description", nullValue())
+        .body("clientSecret", is(not(blankOrNullString())))
+        .body("status", is(not(blankOrNullString())))
     ;
   }
 
   private Map<String, Object> paymentRequest() {
-    return Map.of("amount", 1000L);
+    return Map.of(
+        "productId", "prod_JLJ8zD5OU23DjR",
+        "amount", 800L,
+        "currency", "PLN"
+    );
   }
 }

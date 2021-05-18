@@ -28,7 +28,7 @@ class PriceResource {
   private final ProductService productService;
   private final PriceService priceService;
 
-  @GetMapping(value = "/price")
+  @GetMapping("/price")
   List<PriceDto> findPricesForProductName(
       @AuthenticationPrincipal String principal,
       @RequestParam(value = "productName", required = false) String productName) {

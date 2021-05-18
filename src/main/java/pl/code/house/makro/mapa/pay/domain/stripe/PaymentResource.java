@@ -26,7 +26,7 @@ class PaymentResource {
   private final PaymentService paymentService;
 
   @ResponseStatus(CREATED)
-  @PutMapping(value = "/payment")
+  @PutMapping("/payment")
   PaymentIntentDto createIntentPayment(
       @AuthenticationPrincipal String principal,
       @RequestBody @Valid StripePaymentRequest request) {
