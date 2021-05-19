@@ -6,6 +6,13 @@ makromapa-auth:
   root:
     url: http://localhost:9091
 
+
+spring:
+  datasource:
+    url: jdbc:postgresql://localhost:5433/makromapa-db-auth
+  flyway:
+    locations: classpath:db/migration/default, classpath:db/migration/local, classpath:db/migration/test-data
+
 security:
   oauth2:
     client:

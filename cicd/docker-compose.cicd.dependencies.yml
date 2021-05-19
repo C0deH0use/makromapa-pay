@@ -1,0 +1,26 @@
+version: '3.8'
+
+services:
+  postgres_db:
+    image: postgres:12
+    restart: always
+    container_name: postgres_db
+
+    expose:
+      - 5432
+
+    ports:
+      - 5432:5432
+
+    environment:
+      - POSTGRES_DB=makromapa-db-dev
+      - POSTGRES_USER=makromapa-pay-user
+      - POSTGRES_PASSWORD=mysecretpassword
+
+    network_mode: cloudbuild
+
+networks:
+  default:
+    external:
+      name: cloudbuild
+
