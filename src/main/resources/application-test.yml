@@ -1,7 +1,7 @@
 spring:
     datasource:
         url: jdbc:postgresql://10.117.16.3:5432/makromapa-auth
-        username: makromapa-auth-user
+        username: makromapa-pay-user
         password: mysecretpassword
 
     flyway:

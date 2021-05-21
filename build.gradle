@@ -59,9 +59,6 @@ configurations {
     runtimeClasspath.extendsFrom(developmentOnly)
 
     integrationTestRuntimeOnly.extendsFrom(testRuntimeOnly)
-    integrationTestRuntimeOnly.extendsFrom(testRuntimeOnly)
-
-    integrationTestImplementation.extendsFrom(testImplementation)
     integrationTestImplementation.extendsFrom(testImplementation)
 }
 
