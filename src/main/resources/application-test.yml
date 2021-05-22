@@ -1,6 +1,6 @@
 spring:
     datasource:
-        url: jdbc:postgresql://10.117.16.3:5432/makromapa-auth
+        url: jdbc:postgresql://10.117.16.3:5432/makromapa-pay
         username: makromapa-pay-user
         password: mysecretpassword
 
