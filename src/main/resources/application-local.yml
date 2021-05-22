@@ -9,7 +9,7 @@ makromapa-auth:
 
 spring:
   datasource:
-    url: jdbc:postgresql://localhost:5433/makromapa-db-auth
+    url: jdbc:postgresql://localhost:5433/makromapa-db-pay
   flyway:
     locations: classpath:db/migration/default, classpath:db/migration/local, classpath:db/migration/test-data
 
