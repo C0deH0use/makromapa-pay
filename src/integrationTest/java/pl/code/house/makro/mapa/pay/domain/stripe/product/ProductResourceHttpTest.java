@@ -1,5 +1,9 @@
 package pl.code.house.makro.mapa.pay.domain.stripe.product;
 
+import static com.github.tomakehurst.wiremock.client.WireMock.aResponse;
+import static com.github.tomakehurst.wiremock.client.WireMock.get;
+import static com.github.tomakehurst.wiremock.client.WireMock.stubFor;
+import static com.github.tomakehurst.wiremock.client.WireMock.urlEqualTo;
 import static io.restassured.http.ContentType.JSON;
 import static io.restassured.module.mockmvc.RestAssuredMockMvc.given;
 import static io.restassured.module.mockmvc.RestAssuredMockMvc.webAppContextSetup;
@@ -17,10 +21,12 @@ import static org.springframework.http.HttpStatus.OK;
 import static org.springframework.security.test.web.servlet.setup.SecurityMockMvcConfigurers.springSecurity;
 import static pl.code.house.makro.mapa.pay.AuthenticationToken.getAuthenticationHeader;
 
+import com.stripe.Stripe;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.cloud.contract.wiremock.AutoConfigureWireMock;
 import org.springframework.web.context.WebApplicationContext;
@@ -34,15 +40,32 @@ class ProductResourceHttpTest {
   @Autowired
   private WebApplicationContext context;
 
+  @Value("${wiremock.server.port}")
+  private int wiremockPort;
+
   @BeforeEach
   void setUp() {
     webAppContextSetup(context, springSecurity());
+    Stripe.overrideApiBase("http://localhost:%d".formatted(wiremockPort));
   }
 
   @Test
   @DisplayName("should return with all products and their Stripe details")
   void shouldReturnWithAllProductsAndTheirStripeDetails() {
     //given
+    stubFor(get(urlEqualTo("/v1/products?active=true"))
+        .willReturn(aResponse()
+            .withBodyFile("stripe/active_products.json"))
+    );
+    stubFor(get(urlEqualTo("/v1/prices?product=prod_JLJ8zD5OU23DjR&active=true"))
+        .willReturn(aResponse()
+            .withBodyFile("stripe/disable_ads_product_prices.json"))
+    );
+    stubFor(get(urlEqualTo("/v1/prices?product=prod_JQM9POpISLwEl0&active=true"))
+        .willReturn(aResponse()
+            .withBodyFile("stripe/premium_product_prices.json"))
+    );
+
     given()
         .header(getAuthenticationHeader())
         .contentType(JSON)
