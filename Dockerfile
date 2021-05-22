@@ -8,4 +8,4 @@ COPY build/libs/makromapa-pay.jar /
 
 EXPOSE 9090
 
-ENTRYPOINT [ "java", "-jar", "/makromapa-pay.jar" ]
+ENTRYPOINT [ "java", "--illegal-access=permit", "-jar", "/makromapa-pay.jar" ]
