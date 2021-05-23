@@ -1,3 +1,7 @@
+admin:
+  auth:
+    password: mysecretpassword
+
 info:
   app:
     name: MakroMapa Payment serice

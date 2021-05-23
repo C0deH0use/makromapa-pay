@@ -34,7 +34,6 @@ import pl.code.house.makro.mapa.pay.MockOAuth2User;
 
 @SpringBootTest
 @MockOAuth2User
-@AutoConfigureWireMock(port = 0)
 class ProductResourceHttpTest {
 
   @Autowired

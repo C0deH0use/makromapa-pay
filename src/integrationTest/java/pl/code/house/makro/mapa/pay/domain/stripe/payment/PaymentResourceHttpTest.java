@@ -8,10 +8,7 @@ import static com.github.tomakehurst.wiremock.client.WireMock.urlEqualTo;
 import static io.restassured.http.ContentType.JSON;
 import static io.restassured.module.mockmvc.RestAssuredMockMvc.given;
 import static io.restassured.module.mockmvc.RestAssuredMockMvc.webAppContextSetup;
-import static org.hamcrest.Matchers.blankOrNullString;
 import static org.hamcrest.Matchers.equalTo;
-import static org.hamcrest.Matchers.is;
-import static org.hamcrest.Matchers.not;
 import static org.hamcrest.Matchers.nullValue;
 import static org.springframework.http.HttpHeaders.CONTENT_TYPE;
 import static org.springframework.http.HttpStatus.CREATED;
@@ -21,21 +18,17 @@ import static pl.code.house.makro.mapa.pay.AuthenticationToken.getAuthentication
 import com.github.tomakehurst.wiremock.client.WireMock;
 import com.stripe.Stripe;
 import java.util.Map;
-import org.apache.groovy.util.Maps;
-import org.hamcrest.Matchers;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.cloud.contract.wiremock.AutoConfigureWireMock;
 import org.springframework.web.context.WebApplicationContext;
 import pl.code.house.makro.mapa.pay.MockOAuth2User;
 
 @MockOAuth2User
 @SpringBootTest
-@AutoConfigureWireMock(port = 0)
 class PaymentResourceHttpTest {
 
   @Autowired
@@ -54,9 +47,6 @@ class PaymentResourceHttpTest {
   @DisplayName("should create new Stripe Payment Intend for current user")
   void shouldCreateNewStripePaymentIntendForCurrentUser() {
     //given
-    Map expectedParams = Maps.of(
-        "amount", "800"
-    );
     stubFor(post(urlEqualTo("/v1/payment_intents"))
         .withRequestBody(containing("amount=800&currency=PLN"))
         .withHeader(CONTENT_TYPE, WireMock.equalTo("application/x-www-form-urlencoded;charset=UTF-8"))

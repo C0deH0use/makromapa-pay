@@ -5,6 +5,7 @@ import static com.fasterxml.jackson.databind.SerializationFeature.WRITE_DATES_AS
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.module.SimpleModule;
 import com.fasterxml.jackson.databind.util.StdDateFormat;
+import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
 import java.time.Clock;
 import java.time.ZoneId;
 import lombok.extern.slf4j.Slf4j;
@@ -27,12 +28,14 @@ class InfrastructureConfiguration {
 
   @Bean
   @Primary
-  ObjectMapper defaultObjectMapper() {
+  public ObjectMapper defaultObjectMapper() {
     final ObjectMapper objectMapper = new ObjectMapper();
 
     final SimpleModule customsModule = new SimpleModule();
     objectMapper.registerModule(customsModule);
 
+    final JavaTimeModule javaTimeModule = new JavaTimeModule();
+    objectMapper.registerModule(javaTimeModule);
     objectMapper.disable(WRITE_DATES_AS_TIMESTAMPS);
     objectMapper.setDateFormat(new StdDateFormat());
 

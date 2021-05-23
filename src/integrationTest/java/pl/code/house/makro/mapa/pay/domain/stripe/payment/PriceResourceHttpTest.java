@@ -2,7 +2,6 @@ package pl.code.house.makro.mapa.pay.domain.stripe.payment;
 
 import static com.github.tomakehurst.wiremock.client.WireMock.aResponse;
 import static com.github.tomakehurst.wiremock.client.WireMock.get;
-import static com.github.tomakehurst.wiremock.client.WireMock.post;
 import static com.github.tomakehurst.wiremock.client.WireMock.stubFor;
 import static com.github.tomakehurst.wiremock.client.WireMock.urlEqualTo;
 import static io.restassured.http.ContentType.JSON;
@@ -26,13 +25,11 @@ import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.cloud.contract.wiremock.AutoConfigureWireMock;
 import org.springframework.web.context.WebApplicationContext;
 import pl.code.house.makro.mapa.pay.MockOAuth2Admin;
 
 @MockOAuth2Admin
 @SpringBootTest
-@AutoConfigureWireMock(port = 0)
 class PriceResourceHttpTest {
 
   @Autowired
