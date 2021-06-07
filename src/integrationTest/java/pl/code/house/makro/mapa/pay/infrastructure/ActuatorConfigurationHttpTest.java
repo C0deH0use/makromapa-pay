@@ -2,8 +2,8 @@ package pl.code.house.makro.mapa.pay.infrastructure;
 
 import static io.restassured.module.mockmvc.RestAssuredMockMvc.given;
 import static io.restassured.module.mockmvc.RestAssuredMockMvc.webAppContextSetup;
-import static org.springframework.boot.test.context.SpringBootTest.WebEnvironment.RANDOM_PORT;
 import static org.springframework.cloud.contract.spec.internal.HttpStatus.NOT_FOUND;
+import static org.springframework.cloud.contract.spec.internal.HttpStatus.OK;
 import static org.springframework.cloud.contract.spec.internal.HttpStatus.UNAUTHORIZED;
 import static org.springframework.security.test.web.servlet.request.SecurityMockMvcRequestPostProcessors.httpBasic;
 import static org.springframework.security.test.web.servlet.setup.SecurityMockMvcConfigurers.springSecurity;
@@ -16,8 +16,7 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.web.context.WebApplicationContext;
 import pl.code.house.makro.mapa.pay.MockOAuth2User;
 
-@MockOAuth2User
-@SpringBootTest(webEnvironment = RANDOM_PORT)
+@SpringBootTest
 class ActuatorConfigurationHttpTest {
 
   @Autowired
@@ -29,10 +28,9 @@ class ActuatorConfigurationHttpTest {
   }
 
   @Test
-  @DisplayName("Logfile Actuator endpoint should is not open")
-  void LogfileEndpointNotOpen() {
+  @DisplayName("Logfile Actuator endpoint should is UNAUTHORIZED")
+  void LogfileEndpointIsUnauthorized() {
     given()
-
         .get("/actuator/logfile")
 
         .then()
@@ -41,8 +39,8 @@ class ActuatorConfigurationHttpTest {
   }
 
   @Test
-  @DisplayName("Loggers Actuator endpoint should is not open")
-  void LoggersEndpointOpen() {
+  @DisplayName("Loggers Actuator endpoint should is UNAUTHORIZED")
+  void LoggersEndpointIsUnauthorized() {
     given()
         .get("/actuator/loggers")
 
@@ -52,8 +50,20 @@ class ActuatorConfigurationHttpTest {
   }
 
   @Test
-  @DisplayName("should get actuator logger endpoint details")
-  void shouldGetActuatorLoggerEndpointDetails() {
+  @DisplayName("Logfile Actuator endpoint should is Not Opened despite being Admin")
+  void logfileActuatorEndpointShouldIsNotOpenedDespiteBeingAdmin() {
+    given()
+        .auth().with(httpBasic("admin_aga", "mysecretpassword"))
+        .get("/actuator/logfile")
+
+        .then()
+        .log().ifValidationFails()
+        .statusCode(NOT_FOUND);
+  }
+
+  @Test
+  @DisplayName("Logger actuator endpoint is allowed only for admins")
+  void loggerActuatorEndpointIsAllowedOnlyForAdmins() {
     given()
         .auth().with(httpBasic("admin_aga", "mysecretpassword"))
 
@@ -61,6 +71,6 @@ class ActuatorConfigurationHttpTest {
 
         .then()
         .log().ifValidationFails()
-        .statusCode(200);
+        .statusCode(OK);
   }
 }

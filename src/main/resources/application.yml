@@ -1,7 +1,3 @@
-admin:
-  auth:
-    password: mysecretpassword
-
 info:
   app:
     name: MakroMapa Payment serice
@@ -10,6 +6,7 @@ info:
 
 server:
   port: 9090
+
 
 spring:
   profiles:
@@ -37,6 +34,11 @@ spring:
   flyway:
     locations: classpath:db/migration/default
 
+  security:
+    user:
+      name: admin_aga
+      password: '{bcrypt}$2a$10$qddTFdN3.mRq9P4/mlGVXOog30EvQA0cjSK8woqmD9pA/3hk6kQUu'
+      roles: ADMIN
 
 payments:
   stripe:
