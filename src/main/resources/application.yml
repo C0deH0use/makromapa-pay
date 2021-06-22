@@ -51,8 +51,8 @@ makromapa-auth:
 security:
   oauth2:
     resource:
-      prefer-token-info: true
-      user-info-uri: ${makromapa-auth.root.url}/oauth/user-info
+      prefer-token-info: false
+      user-info-uri: ${makromapa-auth.root.url}/oauth/user/info
       token-info-uri: ${makromapa-auth.root.url}/oauth/check_token
 
     client:

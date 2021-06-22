@@ -2,7 +2,6 @@ spring:
     datasource:
         url: jdbc:postgresql://10.114.224.3:5432/makromapa-pay
         username: makromapa-pay-user
-        password: mysecretpassword
 
     flyway:
         locations: classpath:db/migration/default,classpath:db/migration/prod

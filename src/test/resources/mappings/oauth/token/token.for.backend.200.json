@@ -1,0 +1,23 @@
+{
+  "request": {
+    "url": "/oauth/token",
+    "method": "POST",
+    "headers": {
+      "Authorization": {
+        "equalTo": "Basic bWFrcm9tYXBhLWJhY2tlbmQ6c2VjcmV0"
+      }
+    }
+  },
+  "response": {
+    "status": 200,
+    "headers": {
+      "Content-Type": "application/json"
+    },
+    "jsonBody": {
+      "access_token": "7387f60e-8ee1-4d54-bd43-4e98a170e214",
+      "token_type": "bearer",
+      "expires_in": 6047,
+      "scope": "USE"
+    }
+  }
+}

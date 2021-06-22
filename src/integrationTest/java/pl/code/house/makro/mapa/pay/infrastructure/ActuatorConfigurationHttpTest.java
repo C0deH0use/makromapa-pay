@@ -14,7 +14,6 @@ import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.web.context.WebApplicationContext;
-import pl.code.house.makro.mapa.pay.MockOAuth2User;
 
 @SpringBootTest
 class ActuatorConfigurationHttpTest {

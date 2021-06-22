@@ -1,9 +1,5 @@
 package pl.code.house.makro.mapa.pay.domain.stripe.payment;
 
-import static com.github.tomakehurst.wiremock.client.WireMock.aResponse;
-import static com.github.tomakehurst.wiremock.client.WireMock.get;
-import static com.github.tomakehurst.wiremock.client.WireMock.stubFor;
-import static com.github.tomakehurst.wiremock.client.WireMock.urlEqualTo;
 import static io.restassured.http.ContentType.JSON;
 import static io.restassured.module.mockmvc.RestAssuredMockMvc.given;
 import static io.restassured.module.mockmvc.RestAssuredMockMvc.webAppContextSetup;
@@ -25,11 +21,11 @@ import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.cloud.contract.wiremock.AutoConfigureWireMock;
 import org.springframework.web.context.WebApplicationContext;
-import pl.code.house.makro.mapa.pay.MockOAuth2Admin;
 
-@MockOAuth2Admin
 @SpringBootTest
+@AutoConfigureWireMock(port = 0)
 class PriceResourceHttpTest {
 
   @Autowired
@@ -48,11 +44,6 @@ class PriceResourceHttpTest {
   @DisplayName("should find all prices")
   void shouldFindAllPrices() {
     //given
-    stubFor(get(urlEqualTo("/v1/prices?active=true"))
-        .willReturn(aResponse()
-            .withBodyFile("stripe/active_prices.json"))
-    );
-
     given()
         .header(getAuthenticationHeader())
         .contentType(JSON)
@@ -81,15 +72,6 @@ class PriceResourceHttpTest {
   @DisplayName("should find all prices linked to product by productName Key")
   void shouldFindAllPricesLinkedToProductByProductNameKey() {
     //given
-    stubFor(get(urlEqualTo("/v1/products?active=true"))
-        .willReturn(aResponse()
-            .withBodyFile("stripe/active_products.json"))
-    );
-    stubFor(get(urlEqualTo("/v1/prices?product=prod_JLJ8zD5OU23DjR&active=true"))
-        .willReturn(aResponse()
-            .withBodyFile("stripe/disable_ads_product_prices.json"))
-    );
-
     given()
         .header(getAuthenticationHeader())
         .contentType(JSON)

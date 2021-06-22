@@ -1,0 +1,38 @@
+{
+  "request": {
+    "url": "/oauth/check_token",
+    "method": "POST",
+    "headers": {
+      "Authorization": {
+        "equalTo": "Basic bWFrcm9tYXBhLWJhY2tlbmQ6c2VjcmV0"
+      }
+    },
+    "bodyPatterns": [
+      {
+        "equalTo": "token=a0942e10-726b-4598-82fc-bd8537bbded4"
+      }
+    ]
+  },
+  "response": {
+    "status": 200,
+    "headers": {
+      "Content-Type": "application/json"
+    },
+    "jsonBody": {
+      "aud": [
+        "makromapa-mobile"
+      ],
+      "active": true,
+      "exp": 1653853424,
+      "user_name": "aa6641c1-e9f4-417f-adf4-f71accc470cb",
+      "client_id": "makromapa-mobile",
+      "scope": [
+        "USER",
+        "ADMIN"
+      ],
+      "authorities" : [
+        "ROLE_ADMIN_USER"
+      ]
+    }
+  }
+}

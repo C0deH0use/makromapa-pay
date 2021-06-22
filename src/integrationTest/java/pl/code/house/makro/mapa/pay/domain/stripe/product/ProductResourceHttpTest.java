@@ -1,9 +1,5 @@
 package pl.code.house.makro.mapa.pay.domain.stripe.product;
 
-import static com.github.tomakehurst.wiremock.client.WireMock.aResponse;
-import static com.github.tomakehurst.wiremock.client.WireMock.get;
-import static com.github.tomakehurst.wiremock.client.WireMock.stubFor;
-import static com.github.tomakehurst.wiremock.client.WireMock.urlEqualTo;
 import static io.restassured.http.ContentType.JSON;
 import static io.restassured.module.mockmvc.RestAssuredMockMvc.given;
 import static io.restassured.module.mockmvc.RestAssuredMockMvc.webAppContextSetup;
@@ -14,7 +10,6 @@ import static org.hamcrest.Matchers.hasItems;
 import static org.hamcrest.Matchers.hasSize;
 import static org.hamcrest.Matchers.lessThanOrEqualTo;
 import static org.hamcrest.Matchers.notNullValue;
-import static org.hamcrest.collection.IsMapContaining.hasEntry;
 import static org.hamcrest.collection.IsMapContaining.hasKey;
 import static org.hamcrest.collection.IsMapContaining.hasValue;
 import static org.springframework.http.HttpStatus.OK;
@@ -30,10 +25,9 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.cloud.contract.wiremock.AutoConfigureWireMock;
 import org.springframework.web.context.WebApplicationContext;
-import pl.code.house.makro.mapa.pay.MockOAuth2User;
 
 @SpringBootTest
-@MockOAuth2User
+@AutoConfigureWireMock(port = 0)
 class ProductResourceHttpTest {
 
   @Autowired
@@ -52,19 +46,6 @@ class ProductResourceHttpTest {
   @DisplayName("should return with all products and their Stripe details")
   void shouldReturnWithAllProductsAndTheirStripeDetails() {
     //given
-    stubFor(get(urlEqualTo("/v1/products?active=true"))
-        .willReturn(aResponse()
-            .withBodyFile("stripe/active_products.json"))
-    );
-    stubFor(get(urlEqualTo("/v1/prices?product=prod_JLJ8zD5OU23DjR&active=true"))
-        .willReturn(aResponse()
-            .withBodyFile("stripe/disable_ads_product_prices.json"))
-    );
-    stubFor(get(urlEqualTo("/v1/prices?product=prod_JQM9POpISLwEl0&active=true"))
-        .willReturn(aResponse()
-            .withBodyFile("stripe/premium_product_prices.json"))
-    );
-
     given()
         .header(getAuthenticationHeader())
         .contentType(JSON)

@@ -1,0 +1,28 @@
+{
+  "request": {
+    "url": "/oauth/user/info",
+    "method": "GET",
+    "headers": {
+      "Authorization": {
+        "equalTo": "Bearer a0942e10-726b-4598-82fc-bd8537bbded4"
+      }
+    }
+  },
+  "response": {
+    "status": 200,
+    "headers": {
+      "Content-Type": "application/json"
+    },
+    "jsonBody": {
+      "sub": "aa6641c1-e9f4-417f-adf4-f71accc470cb",
+      "name": "Makromapa Admin",
+      "surname": "Admin",
+      "email": "admin@example.com",
+      "picture": null,
+      "type": "ADMIN_USER",
+      "provider": "BASIC_AUTH",
+      "enabled": true,
+      "points": 100
+    }
+  }
+}

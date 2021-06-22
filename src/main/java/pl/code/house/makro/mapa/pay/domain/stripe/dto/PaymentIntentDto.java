@@ -9,6 +9,7 @@ import lombok.Value;
 @Builder
 public class PaymentIntentDto {
 
+  String paymentMethodId;
   Long amount;
   Long capturedAmount;
   Long receivedAmount;
@@ -20,6 +21,7 @@ public class PaymentIntentDto {
 
   public static PaymentIntentDto fromIntent(PaymentIntent paymentIntent) {
     return PaymentIntentDto.builder()
+        .paymentMethodId(paymentIntent.getPaymentMethod())
         .amount(paymentIntent.getAmount())
         .currency(paymentIntent.getCurrency())
         .capturedAmount(paymentIntent.getAmountCapturable())

@@ -1,0 +1,32 @@
+{
+  "request": {
+    "url": "/oauth/user/info",
+    "method": "GET",
+    "headers": {
+      "Authorization": {
+        "equalTo": "Bearer 10c7fc72-64f6-4c9a-af2b-a5d33c65ecf3"
+      }
+    }
+  },
+  "response": {
+    "status": 200,
+    "headers": {
+      "Content-Type": "application/json"
+    },
+    "jsonBody": {
+      "sub": "b146b422-475c-4beb-9e9c-4e33e2288b08",
+      "name": "Makromapa Test01",
+      "surname": "Test01",
+      "email": "test.makro01@gmail.com",
+      "picture": "https://lh3.googleusercontent.com/-ikY_Cm72czw/AAAAAAAAAAI/AAAAAAAAAAA/AMZuuclOYs-lQmxAWahK4NhqYU-W2pcy7g/s96-c/photo.jpg",
+      "type": "PREMIUM_USER",
+      "provider": "GOOGLE",
+      "enabled": true,
+      "premiumFeatures": [
+        "PREMIUM",
+        "DISABLE_ADS"
+      ],
+      "points": 100
+    }
+  }
+}

@@ -1,0 +1,77 @@
+{
+  "request": {
+    "url": "/v1/payment_intents",
+    "method": "POST",
+    "headers": {
+      "Authorization": {
+        "equalTo": "Bearer sk_test"
+      },
+      "Content-Type": {
+        "equalTo": "application/x-www-form-urlencoded;charset=UTF-8"
+      }
+    },
+    "bodyPatterns": [
+      {
+        "contains": "amount=800&currency=PLN"
+      }
+    ]
+  },
+  "response": {
+    "status": 200,
+    "headers": {
+      "Content-Type": "application/json"
+    },
+    "jsonBody": {
+      "id": "pi_1Iu13DFkiRYX5yMrf9huakhP",
+      "object": "payment_intent",
+      "amount": 800,
+      "amount_capturable": 0,
+      "amount_received": 0,
+      "application": null,
+      "application_fee_amount": null,
+      "canceled_at": null,
+      "cancellation_reason": null,
+      "capture_method": "automatic",
+      "charges": {
+        "object": "list",
+        "data": [],
+        "has_more": false,
+        "total_count": 0,
+        "url": "/v1/charges?payment_intent=pi_1Iu13DFkiRYX5yMrf9huakhP"
+      },
+      "client_secret": "pi_1Iu13DFkiRYX5yMrf9huakhP_secret_r0Acke6RiHGIAqJtOy0dUgDJ3",
+      "confirmation_method": "automatic",
+      "created": 1621713839,
+      "currency": "pln",
+      "customer": null,
+      "description": null,
+      "invoice": null,
+      "last_payment_error": null,
+      "livemode": false,
+      "metadata": {},
+      "next_action": null,
+      "on_behalf_of": null,
+      "payment_method": "pm_1ImcdlFkiRYX5yMrDFXMShNY",
+      "payment_method_options": {
+        "card": {
+          "installments": null,
+          "network": null,
+          "request_three_d_secure": "automatic"
+        }
+      },
+      "payment_method_types": [
+        "card"
+      ],
+      "receipt_email": null,
+      "review": null,
+      "setup_future_usage": null,
+      "shipping": null,
+      "source": null,
+      "statement_descriptor": null,
+      "statement_descriptor_suffix": null,
+      "status": "requires_payment_method",
+      "transfer_data": null,
+      "transfer_group": null
+    }
+  }
+}
