@@ -53,7 +53,7 @@ class PaymentResourceHttpTest {
         .log().ifValidationFails()
         .status(CREATED)
 
-        .body("paymentMethodId", notNullValue())
+        .body("paymentMethodId", equalTo("pm_1ImcdlFkiRYX5yMrDFXMShNY"))
         .body("amount", equalTo(800))
         .body("capturedAmount", equalTo(0))
         .body("receivedAmount", equalTo(0))
