@@ -12,7 +12,7 @@
     },
     "bodyPatterns": [
       {
-        "contains": "amount=800&currency=PLN"
+        "equalTo": "amount=2000&currency=PLN&payment_method=pm_1J5HCaFkiRYX5yMr506R0vMZ"
       }
     ]
   },
@@ -24,7 +24,7 @@
     "jsonBody": {
       "id": "pi_1Iu13DFkiRYX5yMrf9huakhP",
       "object": "payment_intent",
-      "amount": 800,
+      "amount": 2000,
       "amount_capturable": 0,
       "amount_received": 0,
       "application": null,
@@ -51,7 +51,7 @@
       "metadata": {},
       "next_action": null,
       "on_behalf_of": null,
-      "payment_method": "pm_1ImcdlFkiRYX5yMrDFXMShNY",
+      "payment_method": "pm_1J5HCaFkiRYX5yMr506R0vMZ",
       "payment_method_options": {
         "card": {
           "installments": null,

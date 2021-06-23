@@ -7,6 +7,7 @@ import javax.validation.Valid;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
+import org.springframework.security.oauth2.core.OAuth2AuthenticatedPrincipal;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -28,9 +29,10 @@ class PaymentResource {
   @ResponseStatus(CREATED)
   @PutMapping("/payment")
   PaymentIntentDto createIntentPayment(
-      @AuthenticationPrincipal String principal,
+      @AuthenticationPrincipal OAuth2AuthenticatedPrincipal principal,
       @RequestBody @Valid StripePaymentRequest request) {
-    log.info("Request to create new Stripe IntentPayment for user `{}`", principal);
+    log.info("Request to create new Stripe IntentPayment for user `{}`",
+        principal.<String>getAttribute("user_name"));
 
     return paymentService.createNewPaymentIntent(request);
   }

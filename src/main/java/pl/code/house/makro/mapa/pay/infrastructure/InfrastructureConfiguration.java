@@ -8,6 +8,7 @@ import com.fasterxml.jackson.databind.util.StdDateFormat;
 import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
 import java.time.Clock;
 import java.time.ZoneId;
+import java.util.Currency;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -32,6 +33,7 @@ class InfrastructureConfiguration {
     final ObjectMapper objectMapper = new ObjectMapper();
 
     final SimpleModule customsModule = new SimpleModule();
+    customsModule.addDeserializer(Currency.class, new CurrencyDeserializer());
     objectMapper.registerModule(customsModule);
 
     final JavaTimeModule javaTimeModule = new JavaTimeModule();

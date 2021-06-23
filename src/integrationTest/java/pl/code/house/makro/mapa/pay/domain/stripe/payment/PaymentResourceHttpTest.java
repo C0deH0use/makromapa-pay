@@ -1,17 +1,17 @@
 package pl.code.house.makro.mapa.pay.domain.stripe.payment;
 
-import static io.restassured.http.ContentType.JSON;
 import static io.restassured.module.mockmvc.RestAssuredMockMvc.given;
 import static io.restassured.module.mockmvc.RestAssuredMockMvc.webAppContextSetup;
 import static org.hamcrest.Matchers.equalTo;
-import static org.hamcrest.Matchers.notNullValue;
 import static org.hamcrest.Matchers.nullValue;
 import static org.springframework.http.HttpStatus.CREATED;
 import static org.springframework.security.test.web.servlet.setup.SecurityMockMvcConfigurers.springSecurity;
 import static pl.code.house.makro.mapa.pay.AuthenticationToken.getAuthenticationHeader;
 
 import com.stripe.Stripe;
+import java.io.Serializable;
 import java.util.Map;
+import org.jetbrains.annotations.NotNull;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -43,8 +43,8 @@ class PaymentResourceHttpTest {
     //given
     given()
         .header(getAuthenticationHeader())
-        .contentType(JSON)
-        .body(paymentRequest())
+        .contentType("application/json; charset=utf-8")
+        .body(payloadRequest("PLN"))
 
         .when()
         .put("/api/v1/stripe/payment")
@@ -53,8 +53,8 @@ class PaymentResourceHttpTest {
         .log().ifValidationFails()
         .status(CREATED)
 
-        .body("paymentMethodId", equalTo("pm_1ImcdlFkiRYX5yMrDFXMShNY"))
-        .body("amount", equalTo(800))
+        .body("paymentMethodId", equalTo("pm_1J5HCaFkiRYX5yMr506R0vMZ"))
+        .body("amount", equalTo(2000))
         .body("capturedAmount", equalTo(0))
         .body("receivedAmount", equalTo(0))
         .body("currency", equalTo("pln"))
@@ -64,11 +64,39 @@ class PaymentResourceHttpTest {
     ;
   }
 
-  private Map<String, Object> paymentRequest() {
+  @Test
+  @DisplayName("should handle lower case currency values")
+  void shouldHandleLowerCaseCurrencyValues() {
+    given()
+        .header(getAuthenticationHeader())
+        .contentType("application/json; charset=utf-8")
+        .body(payloadRequest("pln"))
+
+        .when()
+        .put("/api/v1/stripe/payment")
+
+        .then()
+        .log().ifValidationFails()
+        .status(CREATED)
+
+        .body("paymentMethodId", equalTo("pm_1J5HCaFkiRYX5yMr506R0vMZ"))
+        .body("amount", equalTo(2000))
+        .body("capturedAmount", equalTo(0))
+        .body("receivedAmount", equalTo(0))
+        .body("currency", equalTo("pln"))
+        .body("description", nullValue())
+        .body("clientSecret", equalTo("pi_1Iu13DFkiRYX5yMrf9huakhP_secret_r0Acke6RiHGIAqJtOy0dUgDJ3"))
+        .body("status", equalTo("requires_payment_method"))
+    ;
+  }
+
+  @NotNull
+  private Map<String, ? extends Serializable> payloadRequest(String currency) {
     return Map.of(
+        "paymentMethod", "pm_1J5HCaFkiRYX5yMr506R0vMZ",
         "productId", "prod_JLJ8zD5OU23DjR",
-        "amount", 800L,
-        "currency", "PLN"
+        "amount", 2000,
+        "currency", currency
     );
   }
 }

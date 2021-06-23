@@ -9,6 +9,7 @@ import java.util.List;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
+import org.springframework.security.oauth2.core.OAuth2AuthenticatedPrincipal;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -20,7 +21,7 @@ import pl.code.house.makro.mapa.pay.domain.stripe.dto.PriceDto;
 @Validated
 @RestController
 @AllArgsConstructor
-//  @PreAuthorize("#oauth2.hasAuthority('ROLE_ADMIN_USER')")
+//  @PreAuthorize("#oauth2.hasAuthority('ROLE_ADMIN')")
 @RequestMapping(path = "/api/v1/stripe",
     produces = APPLICATION_JSON_VALUE, consumes = APPLICATION_JSON_VALUE)
 class PriceResource {
@@ -30,8 +31,10 @@ class PriceResource {
 
   @GetMapping("/price")
   List<PriceDto> findPricesForProductName(
-      @AuthenticationPrincipal String principal,
+      @AuthenticationPrincipal OAuth2AuthenticatedPrincipal principal,
       @RequestParam(value = "productName", required = false) String productName) {
+
+    log.info("Request to find all known prices, send by admin: {}", principal.<String>getAttribute("user_name"));
 
     if (isNotBlank(productName)) {
       log.info("Request to find all prices linked to product by productName `{}`", productName);
@@ -43,7 +46,6 @@ class PriceResource {
           .collect(toList());
     }
 
-    log.info("Request to find all known prices");
     return priceService.findPrices();
   }
 }

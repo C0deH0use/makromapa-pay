@@ -7,6 +7,7 @@ import java.util.List;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
+import org.springframework.security.oauth2.core.OAuth2AuthenticatedPrincipal;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -23,8 +24,9 @@ class ProductResource {
   private final ProductFacade facade;
 
   @GetMapping
-  List<ProductDetailsDto> getProducts(@AuthenticationPrincipal String principal) {
-    log.info("User: {} requested all points products that are currently available for MakroMapa", principal);
+  List<ProductDetailsDto> getProducts(@AuthenticationPrincipal OAuth2AuthenticatedPrincipal principal) {
+    log.info("User: {} requested all points products that are currently available for MakroMapa",
+        principal.<String>getAttribute("user_name"));
 
     return facade.findAll();
   }
