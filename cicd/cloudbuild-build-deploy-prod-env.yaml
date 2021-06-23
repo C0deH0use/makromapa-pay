@@ -46,9 +46,7 @@ steps:
     entrypoint: 'bash'
     args:
       - '-c'
-      - |
-        ./project-version.sh
-        docker build --build-arg commit_short_sha=$SHORT_SHA -t "gcr.io/$PROJECT_ID/makromapa-pay" -t "gcr.io/$PROJECT_ID/makromapa-pay:0.0.1" .
+      - docker build --build-arg commit_short_sha=$SHORT_SHA -t "gcr.io/$PROJECT_ID/makromapa-pay" -t "gcr.io/$PROJECT_ID/makromapa-pay:0.0.10" .
     waitFor:
       - integration_test
 
@@ -64,7 +62,7 @@ steps:
 
   - name: 'gcr.io/cloud-builders/docker'
     id: push_image
-    args: ['push', 'gcr.io/$PROJECT_ID/makromapa-pay:0.0.1']
+    args: ['push', 'gcr.io/$PROJECT_ID/makromapa-pay:0.0.10']
     waitFor:
       - build_image
 
