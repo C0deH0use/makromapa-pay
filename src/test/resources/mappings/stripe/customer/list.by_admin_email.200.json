@@ -1,0 +1,59 @@
+{
+  "request": {
+    "urlPath": "/v1/customers",
+    "method": "GET",
+    "headers": {
+      "Authorization": {
+        "equalTo": "Bearer sk_test"
+      }
+    },
+    "queryParameters": {
+      "email": {
+        "equalTo": "admin@example.com"
+      }
+    }
+  },
+  "response": {
+    "status": 200,
+    "headers": {
+      "Content-Type": "application/json"
+    },
+    "jsonBody": {
+      "object": "list",
+      "data": [
+        {
+          "id": "cus_aaAWikXL6qYMMM",
+          "object": "customer",
+          "address": null,
+          "balance": 0,
+          "created": 1624638891,
+          "currency": null,
+          "default_source": null,
+          "delinquent": false,
+          "description": null,
+          "discount": null,
+          "email": "admin@example.com",
+          "invoice_prefix": "8B781B92",
+          "invoice_settings": {
+            "custom_fields": null,
+            "default_payment_method": null,
+            "footer": null
+          },
+          "livemode": false,
+          "metadata": {
+            "USER_ID": "aa6641c1-e9f4-417f-adf4-f71accc470cb"
+          },
+          "name": "Makromapa Admin",
+          "phone": null,
+          "preferred_locales": [
+            "pl"
+          ],
+          "shipping": null,
+          "tax_exempt": "none"
+        }
+      ],
+      "has_more": false,
+      "url": "/v1/customers"
+    }
+  }
+}
