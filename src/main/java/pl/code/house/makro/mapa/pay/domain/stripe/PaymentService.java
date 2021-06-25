@@ -23,9 +23,10 @@ public class PaymentService extends StripeBaseApi {
     super(stripeApiKey);
   }
 
-  PaymentIntentDto createNewPaymentIntent(StripePaymentRequest request, String customerId) {
+  PaymentIntentDto createNewPaymentIntent(StripePaymentRequest request, String customerId, String email) {
     PaymentIntentCreateParams createParams = new PaymentIntentCreateParams.Builder()
         .setCustomer(customerId)
+        .setReceiptEmail(email)
         .setCurrency(request.getCurrency().getCurrencyCode())
         .setPaymentMethod(request.getPaymentMethod())
         .setAmount(request.getAmount())

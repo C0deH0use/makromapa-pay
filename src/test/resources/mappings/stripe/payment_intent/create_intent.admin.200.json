@@ -12,7 +12,7 @@
     },
     "bodyPatterns": [
       {
-        "contains": "amount=2000&currency=PLN"
+        "contains": "amount=2000&receipt_email=admin%40example.com&currency=PLN"
       },
       {
         "contains": "payment_method=pm_1J5zmwFkiRYX5yMrL6QtpLVI"
@@ -68,7 +68,7 @@
       "payment_method_types": [
         "card"
       ],
-      "receipt_email": null,
+      "receipt_email": "admin@example.com",
       "review": null,
       "setup_future_usage": null,
       "shipping": null,

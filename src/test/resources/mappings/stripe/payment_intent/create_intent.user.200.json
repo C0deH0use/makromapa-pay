@@ -12,7 +12,7 @@
     },
     "bodyPatterns": [
       {
-        "contains": "amount=2000&currency=PLN"
+        "contains": "amount=2000&receipt_email=test.makro01%40gmail.com&currency=PLN"
       },
       {
         "contains": "payment_method=pm_1J6KCQFkiRYX5yMrUSzqtFUK"
@@ -68,7 +68,7 @@
       "payment_method_types": [
         "card"
       ],
-      "receipt_email": null,
+      "receipt_email": "test.makro01@gmail.com",
       "review": null,
       "setup_future_usage": null,
       "shipping": null,

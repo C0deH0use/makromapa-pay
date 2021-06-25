@@ -43,6 +43,7 @@ spring:
 payments:
   stripe:
     api-key: sk_test
+    endpoint-secret: whsec_stest
 
 makromapa-auth:
   root:
