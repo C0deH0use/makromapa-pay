@@ -2,6 +2,8 @@ package pl.code.house.makro.mapa.pay.domain.stripe.payment;
 
 import static io.restassured.module.mockmvc.RestAssuredMockMvc.given;
 import static io.restassured.module.mockmvc.RestAssuredMockMvc.webAppContextSetup;
+import static org.hamcrest.Matchers.anEmptyMap;
+import static org.hamcrest.Matchers.empty;
 import static org.hamcrest.Matchers.equalTo;
 import static org.hamcrest.Matchers.hasSize;
 import static org.hamcrest.Matchers.notNullValue;
@@ -140,6 +142,10 @@ class PaymentResourceHttpTest {
         .body("$", hasSize(1))
         .body("[0].id", equalTo("pm_1J6HyzFkiRYX5yMrY7yC3ogq"))
         .body("[0].type", equalTo("card"))
+        .body("[0].customerId", equalTo("cus_JjlWikXL6qYKTs"))
+        .body("[0].livemode", equalTo(false))
+        .body("[0].created", equalTo(1624638861))
+        .body("[0].metadata", anEmptyMap())
         .body("[0].card.brand", equalTo("visa"))
         .body("[0].card.country", equalTo("US"))
         .body("[0].card.expMonth", equalTo(11))
