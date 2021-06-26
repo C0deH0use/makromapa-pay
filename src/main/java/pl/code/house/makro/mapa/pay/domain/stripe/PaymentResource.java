@@ -64,26 +64,6 @@ class PaymentResource {
     return paymentService.createNewPaymentIntent(request, customerId, userInfo.email());
   }
 
-  @PermitAll
-  @PostMapping("/payment/intent.succeeded")
-  void paymentIntentSucceeded(
-      @RequestBody String payload,
-      @RequestHeader(STRIPE_SIGNATURE_HEADER) String webhookSignature,
-      @Value("payments.stripe.endpoint-secret") String stripeApiKey) {
-
-    PaymentIntent paymentIntent = Try.of(() -> Webhook.constructEvent(payload, webhookSignature, stripeApiKey))
-        .onFailure(SignatureVerificationException.class, e -> log.error("Invalid Signature in WebHook request", e))
-        .peek(event -> log.debug("Stripe WebHook event registered: {}, event data: {}", event.getType(), event.getData()))
-        .filter(event -> PAYMENT_INTENT_SUCCEEDED_EVENT_TYPE.equals(event.getType()))
-        .map(Event::getDataObjectDeserializer)
-        .map(EventDataObjectDeserializer::getObject)
-        .get()
-        .map(obj -> (PaymentIntent) obj)
-        .orElseThrow();
-
-    log.debug("Payment Intent - {}, for customer: {} {}", paymentIntent.getId(), paymentIntent.getCustomer(), paymentIntent.getStatus());
-  }
-
   @GetMapping("/payment/method")
   List<PaymentMethodDto> findPaymentMethods(
       @RequestHeader(AUTHORIZATION) String authHeaderValue) {
