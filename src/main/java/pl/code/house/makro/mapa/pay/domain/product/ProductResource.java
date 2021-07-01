@@ -12,7 +12,7 @@ import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
-import pl.code.house.makro.mapa.pay.domain.product.dto.ProductDetailsDto;
+import pl.code.house.makro.mapa.pay.domain.product.dto.ProductDto;
 
 @Slf4j
 @Validated
@@ -24,8 +24,8 @@ class ProductResource {
   private final ProductFacade facade;
 
   @GetMapping
-  List<ProductDetailsDto> getProducts(@AuthenticationPrincipal OAuth2AuthenticatedPrincipal principal) {
-    log.info("User: {} requested all points products that are currently available for MakroMapa",
+  List<ProductDto> getProducts(@AuthenticationPrincipal OAuth2AuthenticatedPrincipal principal) {
+    log.info("User: {} requested all products that are currently available for MakroMapa",
         principal.<String>getAttribute("user_name"));
 
     return facade.findAll();

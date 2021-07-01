@@ -1,6 +1,5 @@
 package pl.code.house.makro.mapa.pay.domain.product.dto;
 
-import java.util.Set;
 import lombok.Builder;
 import lombok.Value;
 import pl.code.house.makro.mapa.pay.domain.product.PointsOperationReason;
@@ -10,6 +9,7 @@ import pl.code.house.makro.mapa.pay.domain.product.PointsOperationReason;
 public class ProductDto {
 
   Long id;
+  String name;
   int points;
-  Set<PointsOperationReason> reasons;
+  PointsOperationReason reason;
 }

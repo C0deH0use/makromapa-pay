@@ -40,11 +40,6 @@ spring:
       password: '{bcrypt}$2a$10$qddTFdN3.mRq9P4/mlGVXOog30EvQA0cjSK8woqmD9pA/3hk6kQUu'
       roles: ADMIN
 
-payments:
-  stripe:
-    api-key: sk_test
-    endpoint-secret: whsec_stest
-
 makromapa-auth:
   root:
     url: https://auth.makromapa.pl

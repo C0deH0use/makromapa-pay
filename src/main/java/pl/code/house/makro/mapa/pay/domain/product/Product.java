@@ -1,17 +1,15 @@
 package pl.code.house.makro.mapa.pay.domain.product;
 
-import static java.util.stream.Collectors.joining;
-import static java.util.stream.Collectors.toSet;
 import static javax.persistence.AccessType.FIELD;
+import static javax.persistence.EnumType.STRING;
 import static javax.persistence.GenerationType.SEQUENCE;
 import static lombok.AccessLevel.PACKAGE;
 import static lombok.AccessLevel.PROTECTED;
 
-import java.util.Set;
-import java.util.stream.Stream;
 import javax.persistence.Access;
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.Enumerated;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 import javax.persistence.SequenceGenerator;
@@ -20,7 +18,6 @@ import lombok.Builder;
 import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
-import org.apache.commons.lang3.StringUtils;
 import pl.code.house.makro.mapa.pay.domain.AuditAwareEntity;
 import pl.code.house.makro.mapa.pay.domain.product.dto.ProductDto;
 
@@ -54,30 +51,25 @@ class Product extends AuditAwareEntity {
   @Column(name = "points", insertable = false, updatable = false, nullable = false)
   private int points;
 
+  @Enumerated(STRING)
   @Column(name = "reasons", insertable = false, updatable = false, nullable = false)
-  private String reasons;
+  private PointsOperationReason reason;
 
   @Builder(access = PACKAGE)
-  Product(Long id, String name, String description, int points, Set<PointsOperationReason> reasons) {
+  Product(Long id, String name, String description, int points, PointsOperationReason reason) {
     this.id = id;
     this.name = name;
     this.description = description;
     this.points = points;
-    this.reasons = reasons.stream().map(Enum::name).collect(joining(DELIMITER));
-  }
-
-  Set<PointsOperationReason> getReasonsCollection() {
-    return Stream.of(reasons.split(DELIMITER))
-        .filter(StringUtils::isNoneBlank)
-        .map(PointsOperationReason::valueOf)
-        .collect(toSet());
+    this.reason = reason;
   }
 
   ProductDto toDto() {
     return ProductDto.builder()
         .id(id)
+        .name(name)
         .points(points)
-        .reasons(getReasonsCollection())
+        .reason(reason)
         .build();
   }
 }

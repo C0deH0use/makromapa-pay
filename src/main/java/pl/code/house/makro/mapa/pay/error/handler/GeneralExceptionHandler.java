@@ -23,9 +23,6 @@ import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.context.request.WebRequest;
 import org.springframework.web.method.HandlerMethod;
 import org.springframework.web.servlet.mvc.method.annotation.ResponseEntityExceptionHandler;
-import pl.code.house.makro.mapa.pay.error.CreatePaymentIntentException;
-import pl.code.house.makro.mapa.pay.error.CustomerCreationException;
-import pl.code.house.makro.mapa.pay.error.CustomerNotFoundException;
 
 @Slf4j
 @ControllerAdvice
@@ -33,7 +30,7 @@ public class GeneralExceptionHandler extends ResponseEntityExceptionHandler {
 
   private final ErrorHttpStatusResolver statusResolver = new ErrorHttpStatusResolver();
 
-  @ExceptionHandler({CreatePaymentIntentException.class, CustomerCreationException.class, CustomerNotFoundException.class})
+  @ExceptionHandler({Exception.class})
   public ResponseEntity<Object> respondWithError(Exception ex, HandlerMethod handlerMethod) {
     final ErrorMessage errorMessage = ErrorMessage.from(ex);
     logError(ex, errorMessage.getUniqueErrorId(), handlerMethod);
